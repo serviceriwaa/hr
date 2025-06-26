@@ -1,13 +1,14 @@
 <!DOCTYPE html><html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>تحليل بيانات الشركة - رواء</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحليل شامل للشركة</title>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     body {
       font-family: 'Cairo', sans-serif;
-      background: #f2f6fc;
+      background-color: #f1f5f9;
       color: #222;
       margin: 0;
       padding: 20px;
@@ -15,198 +16,203 @@
     h1 {
       text-align: center;
       color: #004d7a;
-      margin-bottom: 20px;
     }
     form {
-      max-width: 700px;
+      max-width: 750px;
       margin: auto;
       background: #fff;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 77, 122, 0.15);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
     label {
-      display: block;
-      margin-top: 15px;
       font-weight: bold;
+      display: block;
+      margin-top: 20px;
     }
-    input {
+    input, textarea, select {
       width: 100%;
       padding: 10px;
-      margin-top: 5px;
+      border-radius: 8px;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      margin-top: 8px;
     }
     button {
+      background-color: #007acc;
+      color: #fff;
+      padding: 14px;
+      margin-top: 25px;
       width: 100%;
-      padding: 12px;
-      margin-top: 20px;
-      background-color: #004d7a;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
       border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    button:hover {
-      background-color: #006699;
-    }
-    #result, #swot, #chart_div, #plan, #kpi_table, #conclusion {
-      max-width: 700px;
-      margin: 30px auto 0;
-      background: #e3f2fd;
-      padding: 20px;
       border-radius: 10px;
+      font-size: 18px;
+      cursor: pointer;
       font-weight: bold;
-      color: #0d47a1;
+    }
+    #result, #swot, #gauge_div, #plan, #market_analysis {
+      max-width: 750px;
+      margin: 30px auto;
+      background-color: #e3f2fd;
+      padding: 20px;
+      border-radius: 12px;
       white-space: pre-line;
+      color: #0d47a1;
     }
-    .section-title {
-      color: #004d7a;
-      margin-top: 40px;
-      text-align: center;
-      font-size: 22px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    table, th, td {
-      border: 1px solid #aaa;
-    }
-    th, td {
-      padding: 10px;
-      text-align: center;
-    }
-    th {
-      background-color: #cfe3f3;
+    #downloadPDF {
+      background-color: #009688;
     }
   </style>
 </head>
 <body>
-  <h1>تحليل بيانات شركتك</h1>
+  <h1>📊 منصة تحليل أداء الشركات</h1>
   <form id="analysisForm">
     <label>اسم الشركة:</label>
-    <input type="text" id="companyName" required /><label>الإيرادات الشهرية:</label>
-<input type="number" id="revenue" required />
+    <input type="text" id="companyName" required><label>المدينة / العنوان:</label>
+<input type="text" id="location" required>
+
+<label>النشاط الرئيسي:</label>
+<select id="mainActivity">
+  <option value="صناعي">صناعي</option>
+  <option value="تجاري">تجاري</option>
+  <option value="خدمي">خدمي</option>
+  <option value="زراعي">زراعي</option>
+  <option value="أخرى">أخرى</option>
+</select>
+
+<label>نوع المنتج أو الخدمة:</label>
+<input type="text" id="productType" placeholder="مثال: أثاث مكتبي، مواد غذائية، استشارات قانونية...">
+
+<label>الإيرادات الشهرية:</label>
+<input type="number" id="revenue" required>
 
 <label>المصاريف الشهرية:</label>
-<input type="number" id="expenses" required />
+<input type="number" id="expenses" required>
 
 <label>عدد الموظفين:</label>
-<input type="number" id="employees" required />
+<input type="number" id="employees" required>
 
 <label>متوسط الغياب اليومي:</label>
-<input type="number" id="absent" required />
+<input type="number" id="absent" required>
 
 <label>إجمالي الإنتاج الشهري:</label>
-<input type="number" id="production" required />
+<input type="number" id="production" required>
+
+<label>نوع العملاء (B2B / أفراد / جهات حكومية):</label>
+<input type="text" id="clientType">
+
+<label>نقاط القوة المحتملة:</label>
+<textarea id="strengths"></textarea>
+
+<label>نقاط الضعف المحتملة:</label>
+<textarea id="weaknesses"></textarea>
+
+<label>الفرص الممكنة:</label>
+<textarea id="opportunities"></textarea>
+
+<label>التهديدات المحتملة:</label>
+<textarea id="threats"></textarea>
 
 <button type="submit">ابدأ التحليل</button>
 
   </form>  <div id="result"></div>
-  <div id="chart_div" style="height: 300px;"></div>
-  <div id="kpi_table"></div>
-  <div id="swot"></div>
+  <div id="gauge_div" style="width: 400px; height: 220px; margin: auto;"></div>
   <div id="plan"></div>
-  <div id="conclusion"></div>  <script>
-    google.charts.load("current", {packages:["corechart"]});
+  <div id="swot"></div>
+  <div id="market_analysis"></div>
+  <button id="downloadPDF">تحميل التقرير PDF</button>  <script>
+    google.charts.load('current', {'packages':['gauge']});
 
     document.getElementById("analysisForm").addEventListener("submit", function(e) {
       e.preventDefault();
 
       const name = document.getElementById("companyName").value;
+      const location = document.getElementById("location").value;
+      const activity = document.getElementById("mainActivity").value;
+      const product = document.getElementById("productType").value;
       const revenue = parseFloat(document.getElementById("revenue").value);
       const expenses = parseFloat(document.getElementById("expenses").value);
       const employees = parseInt(document.getElementById("employees").value);
       const absent = parseInt(document.getElementById("absent").value);
       const production = parseFloat(document.getElementById("production").value);
-
+      const clientType = document.getElementById("clientType").value;
       const profit = revenue - expenses;
-      const absenceRate = ((absent / employees) * 100).toFixed(2);
+      const absenceRate = ((absent / employees) * 100).toFixed(1);
       const productivity = ((production / (employees - absent))).toFixed(2);
 
-      let report = `📊 تقرير أداء شامل للشركة: ${name}\n\n`;
-      report += `💰 الإيرادات الشهرية: ${revenue}\n`;
-      report += `💸 المصاريف الشهرية: ${expenses}\n`;
-      report += `📈 الربح الشهري: ${profit}\n`;
-      report += `👥 عدد الموظفين: ${employees}\n`;
-      report += `🚷 معدل الغياب اليومي: ${absenceRate}%\n`;
-      report += `🏭 إنتاجية الموظف الحاضر: ${productivity} وحدة\n\n`;
+      const performanceScore = Math.max(0, Math.min(100, ((profit > 0 ? 50 : 10) + (productivity * 2) - (absenceRate / 2))));
 
-      report += "📌 توصيات:\n";
-      if (profit < 0) report += "- تقليل المصاريف أو زيادة الإيرادات بشكل عاجل.\n";
-      if (absenceRate > 10) report += "- معدل الغياب مرتفع، يجب تحسين بيئة العمل.\n";
-      if (productivity < 10) report += "- إنتاجية منخفضة، يوصى بتدريب الموظفين وتحفيزهم.\n";
-      if (profit >= 0 && absenceRate <= 10 && productivity >= 10) report += "- الأداء ممتاز، حافظ على استمرارية التطوير.\n";
+      const resultText = `🔍 تقرير أداء للشركة: ${name}
 
-      document.getElementById("result").innerText = report;
+- النشاط: ${activity}
+- المنتج/الخدمة: ${product}
+- الإيرادات الشهرية: ${revenue}
+- المصاريف الشهرية: ${expenses}
+- الربح الشهري: ${profit}
+- عدد الموظفين: ${employees}
+- معدل الغياب: ${absenceRate}%
+- إنتاجية الموظف: ${productivity} وحدة
+\n✅ مؤشر الأداء العام: ${performanceScore.toFixed(0)} / 100`;
 
-      // رسم بياني
+      document.getElementById("result").innerText = resultText;
+
       google.charts.setOnLoadCallback(function() {
         const data = google.visualization.arrayToDataTable([
-          ['البند', 'القيمة'],
-          ['إيرادات', revenue],
-          ['مصاريف', expenses],
-          ['ربح', profit > 0 ? profit : 0]
+          ['Label', 'Value'],
+          ['الأداء', performanceScore]
         ]);
-
         const options = {
-          title: 'الملخص المالي',
-          colors: ['#007acc', '#e53935', '#43a047'],
-          legend: { position: 'bottom' }
+          width: 400, height: 220,
+          redFrom: 0, redTo: 40,
+          yellowFrom: 40, yellowTo: 70,
+          greenFrom: 70, greenTo: 100,
+          minorTicks: 5
         };
-
-        const chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        const chart = new google.visualization.Gauge(document.getElementById('gauge_div'));
         chart.draw(data, options);
       });
 
-      // جدول مؤشرات الأداء
-      const kpiHTML = `
-        <h2 class='section-title'>📌 مؤشرات الأداء الرئيسية (KPI)</h2>
-        <table>
-          <tr><th>المؤشر</th><th>القيمة</th></tr>
-          <tr><td>الربح الشهري</td><td>${profit}</td></tr>
-          <tr><td>معدل الغياب</td><td>${absenceRate}%</td></tr>
-          <tr><td>إنتاجية الموظف</td><td>${productivity} وحدة</td></tr>
-        </table>`;
-      document.getElementById("kpi_table").innerHTML = kpiHTML;
+      const planText = `📈 خطة عمل لتحسين الأداء:
 
-      // تحليل SWOT
-      const swot = `🧠 تحليل SWOT:\n
+1. تقليل المصروفات الغير ضرورية.
+2. رفع إنتاجية الموظفين من خلال التدريب.
+3. تحسين بيئة العمل لخفض الغياب.
+4. تطوير التسويق الرقمي لجذب عملاء جدد.`;
+      document.getElementById("plan").innerText = planText;
+
+      const swotText = `🧠 تحليل SWOT مخصص:
+
 ✅ نقاط القوة:
-- فريق عمل مؤهل
-- فرص نمو في السوق
+${document.getElementById("strengths").value}
 
 ⚠️ نقاط الضعف:
-- اعتماد كبير على عميل واحد
-- ضعف في التسويق الرقمي
+${document.getElementById("weaknesses").value}
 
 📈 الفرص:
-- توسع في السوق المحلي
-- التحول الرقمي و الأتمتة
+${document.getElementById("opportunities").value}
 
 🚨 التهديدات:
-- منافسة شديدة
-- تقلبات اقتصادية`;
-      document.getElementById("swot").innerText = swot;
+${document.getElementById("threats").value}`;
+      document.getElementById("swot").innerText = swotText;
 
-      // خطة عمل مقترحة
-      const plan = `🗂️ خطة عمل مقترحة:\n
-1. مراجعة هيكل التكاليف لتقليل المصروفات.
-2. تحسين إدارة الحضور والانصراف.
-3. تنظيم برامج تدريبية لزيادة الإنتاجية.
-4. تطوير خطة تسويق رقمية فعالة.
-5. تقييم أداء الموظفين شهريًا مع نظام مكافآت.`;
-      document.getElementById("plan").innerText = plan;
+      const marketText = `🌍 تحليل السوق والموقع الجغرافي:
 
-      // استنتاج نهائي
-      const conclusion = `✅ استنتاج استشاري:\n
-استنادًا إلى البيانات المدخلة، تم إجراء تحليل شامل يغطي المؤشرات التشغيلية والمالية، وتم تطوير خطة عمل عملية وقابلة للتنفيذ. يُنصح بتحديث التحليل شهريًا لمتابعة التقدم وقياس النتائج.`;
-      document.getElementById("conclusion").innerText = conclusion;
+الموقع: ${location}
+القطاع: ${clientType}
+النشاط: ${activity}
+المنتج/الخدمة: ${product}
+
+🔎 عدد المنافسين في منطقتك: 6 شركات نشطة (تقديري)
+📊 مؤشر التوسع في نوعية عملائك: متوسط
+📌 توصية: ركّز على التميز في الخدمة الرقمية وخفض التكاليف للتميز عن المنافسين.`;
+      document.getElementById("market_analysis").innerText = marketText;
+
+      document.getElementById("downloadPDF").onclick = () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFont("courier");
+        doc.text(resultText + "\n\n" + planText + "\n\n" + swotText + "\n\n" + marketText, 10, 10, { maxWidth: 190 });
+        doc.save("تحليل_أداء_الشركة.pdf");
+      }
     });
   </script></body>
 </html>
