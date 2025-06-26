@@ -1,278 +1,317 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <title>تحليل شامل - شركة رواء</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f4f8;
-      margin: 0; padding: 20px;
-      color: #333;
-    }
-    h1 {
-      text-align: center;
-      color: #0a4a7b;
-      margin-bottom: 20px;
-    }
-    form {
-      max-width: 700px;
-      margin: auto;
-      background: #fff;
-      padding: 20px 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-    }
-    button {
-      margin-top: 25px;
-      width: 100%;
-      padding: 12px;
-      font-size: 1.1rem;
-      background: #0a4a7b;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #083a5d;
-    }
-    #result {
-      max-width: 700px;
-      margin: 30px auto;
-      background: #e6f0ff;
-      padding: 20px;
-      border-radius: 10px;
-      white-space: pre-line;
-      font-weight: bold;
-      color: #0a4a7b;
-    }
-    #map {
-      width: 100%;
-      height: 300px;
-      margin-top: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
-    #chart_div {
-      max-width: 700px;
-      margin: 30px auto;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>تحليل شامل لشركة رواء - المرحلة الأولى</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    margin: 0; padding: 20px;
+    color: #333;
+  }
+  h1 {
+    text-align: center;
+    color: #0a4a7b;
+    margin-bottom: 20px;
+  }
+  form {
+    max-width: 750px;
+    margin: auto;
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    position: relative;
+  }
+  label .tooltip {
+    cursor: help;
+    color: #0a4a7b;
+    font-weight: normal;
+    margin-right: 5px;
+    border-bottom: 1px dotted #0a4a7b;
+  }
+  input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  select[multiple] {
+    height: 120px;
+  }
+  button {
+    margin-top: 25px;
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    background: #0a4a7b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #083a5d;
+  }
+  #result {
+    max-width: 750px;
+    margin: 30px auto;
+    background: #e6f0ff;
+    padding: 20px;
+    border-radius: 10px;
+    white-space: pre-line;
+    font-weight: bold;
+    color: #0a4a7b;
+  }
+  #charts_container {
+    max-width: 750px;
+    margin: 30px auto;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  #chart_div, #pie_chart_div {
+    width: 350px;
+    height: 300px;
+  }
+  p.note {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 5px;
+  }
+  .error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 4px;
+  }
+</style>
 </head>
 <body>
 
-<h1>تحليل شامل لأداء شركتك</h1>
+<h1>تحليل شامل لأداء شركتك مع خطة عمل مقترحة (المرحلة الأولى)</h1>
 
-<form id="analysisForm">
+<form id="analysisForm" novalidate>
 
-  <label>اسم الشركة</label>
+  <label>اسم الشركة
+    <span class="tooltip" title="اكتب اسم شركتك الرسمي">?</span>
+  </label>
   <input type="text" id="companyName" required placeholder="مثلاً: رواء للاستشارات">
+  <div id="error-companyName" class="error"></div>
 
-  <label>موقع الشركة (المدينة)</label>
-  <input type="text" id="companyLocation" required placeholder="مثلاً: الزقازيق">
+  <label>الإيرادات الشهرية
+    <span class="tooltip" title="إجمالي قيمة الإيرادات الشهرية التي تحققها شركتك">?</span>
+  </label>
+  <input type="number" id="revenue" min="0" required placeholder="مثلاً: 150000">
+  <div id="error-revenue" class="error"></div>
 
-  <label>الإيرادات الشهرية (بالجنيه)</label>
-  <input type="number" id="revenue" required placeholder="مثلاً: 150000">
+  <label>المصاريف الشهرية
+    <span class="tooltip" title="إجمالي قيمة المصاريف الشهرية التي تتحملها شركتك">?</span>
+  </label>
+  <input type="number" id="expenses" min="0" required placeholder="مثلاً: 120000">
+  <div id="error-expenses" class="error"></div>
 
-  <label>المصاريف الشهرية (بالجنيه)</label>
-  <input type="number" id="expenses" required placeholder="مثلاً: 120000">
+  <p class="note">(يرجى إدخال القيم المالية حسب العملة التي تستخدمها شركتك)</p>
 
-  <label>عدد الموظفين</label>
-  <input type="number" id="employees" required placeholder="مثلاً: 25">
+  <label>عدد الموظفين
+    <span class="tooltip" title="عدد الموظفين الدائمين في شركتك">?</span>
+  </label>
+  <input type="number" id="employees" min="1" required placeholder="مثلاً: 25">
+  <div id="error-employees" class="error"></div>
 
-  <label>متوسط عدد الموظفين الغائبين يوميًا</label>
-  <input type="number" id="avgAbsent" required placeholder="مثلاً: 3">
+  <label>متوسط عدد الموظفين الغائبين يوميًا
+    <span class="tooltip" title="عدد الموظفين المتوقع غيابهم يوميًا في المتوسط">?</span>
+  </label>
+  <input type="number" id="avgAbsent" min="0" required placeholder="مثلاً: 3">
+  <div id="error-avgAbsent" class="error"></div>
 
-  <label>إجمالي الإنتاج الشهري (عدد الوحدات أو الخدمات)</label>
-  <input type="number" id="production" required placeholder="مثلاً: 500">
+  <label>إجمالي الإنتاج الشهري (عدد الوحدات أو الخدمات)
+    <span class="tooltip" title="كمية المنتجات أو الخدمات التي تقدمها شهريًا">?</span>
+  </label>
+  <input type="number" id="production" min="0" required placeholder="مثلاً: 500">
+  <div id="error-production" class="error"></div>
 
-  <label>عدد العملاء (اختياري)</label>
-  <input type="number" id="clientsCount" placeholder="مثلاً: 200">
+  <label>عدد العملاء (اختياري)
+    <span class="tooltip" title="عدد العملاء الحاليين">?</span>
+  </label>
+  <input type="number" id="clientsCount" min="0" placeholder="مثلاً: 200">
 
-  <label>وصف مختصر للنشاط</label>
-  <textarea id="activityDesc" rows="3" placeholder="مثلاً: خدمات موارد بشرية، توظيف، استشارات قانونية"></textarea>
+  <label>نقاط القوة (اختر ما ينطبق)
+    <span class="tooltip" title="اختر من أهم نقاط القوة في شركتك">?</span>
+  </label>
+  <select id="strengths" multiple>
+    <option value="خبرة عالية في الموارد البشرية">خبرة عالية في الموارد البشرية</option>
+    <option value="علاقات قوية مع العملاء">علاقات قوية مع العملاء</option>
+    <option value="خدمات تحليل بيانات متقدمة">خدمات تحليل بيانات متقدمة</option>
+    <option value="تواجد في السوق لفترة طويلة">تواجد في السوق لفترة طويلة</option>
+  </select>
+
+  <label>نقاط الضعف (اختر ما ينطبق)
+    <span class="tooltip" title="اختر من أبرز نقاط الضعف في شركتك">?</span>
+  </label>
+  <select id="weaknesses" multiple>
+    <option value="ضعف في التسويق الرقمي">ضعف في التسويق الرقمي</option>
+    <option value="نقص في التدريب للموظفين">نقص في التدريب للموظفين</option>
+    <option value="اعتماد عالي على موظفين محددين">اعتماد عالي على موظفين محددين</option>
+    <option value="موارد مالية محدودة">موارد مالية محدودة</option>
+  </select>
+
+  <label>الفرص (اختر ما ينطبق)
+    <span class="tooltip" title="اختر من الفرص المتاحة في السوق">?</span>
+  </label>
+  <select id="opportunities" multiple>
+    <option value="زيادة الطلب على خدمات الموارد البشرية">زيادة الطلب على خدمات الموارد البشرية</option>
+    <option value="توسع السوق الرقمي">توسع السوق الرقمي</option>
+    <option value="تطوير تقنيات تحليل البيانات">تطوير تقنيات تحليل البيانات</option>
+    <option value="شراكات استراتيجية جديدة">شراكات استراتيجية جديدة</option>
+  </select>
+
+  <label>التهديدات (اختر ما ينطبق)
+    <span class="tooltip" title="اختر من التهديدات التي تواجهها شركتك">?</span>
+  </label>
+  <select id="threats" multiple>
+    <option value="منافسة شديدة في السوق">منافسة شديدة في السوق</option>
+    <option value="تغيرات في القوانين">تغيرات في القوانين</option>
+    <option value="تراجع في الاقتصاد">تراجع في الاقتصاد</option>
+    <option value="صعوبة في جذب المواهب">صعوبة في جذب المواهب</option>
+  </select>
 
   <button type="submit">ابدأ التحليل</button>
 </form>
 
 <div id="result"></div>
 
-<div id="map"></div>
-
-<div id="chart_div"></div>
+<div id="charts_container">
+  <div id="chart_div"></div>
+  <div id="pie_chart_div"></div>
+</div>
 
 <!-- Google Charts -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<!-- Google Maps API (ضع مفتاحك هنا) -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
 
 <script>
-  // تحميل مكتبة Google Charts
   google.charts.load('current', {'packages':['corechart']});
 
-  document.getElementById('analysisForm').addEventListener('submit', function(e){
-    e.preventDefault();
+  const form = document.getElementById('analysisForm');
+  const resultDiv = document.getElementById('result');
 
-    // قراءة البيانات
-    const name = document.getElementById('companyName').value.trim();
-    const location = document.getElementById('companyLocation').value.trim();
+  function clearErrors() {
+    ['companyName','revenue','expenses','employees','avgAbsent','production'].forEach(id => {
+      document.getElementById('error-' + id).innerText = '';
+    });
+  }
+
+  function validate() {
+    clearErrors();
+    let valid = true;
+
+    const companyName = document.getElementById('companyName').value.trim();
     const revenue = +document.getElementById('revenue').value;
     const expenses = +document.getElementById('expenses').value;
     const employees = +document.getElementById('employees').value;
     const avgAbsent = +document.getElementById('avgAbsent').value;
     const production = +document.getElementById('production').value;
-    const clientsCount = document.getElementById('clientsCount').value ? +document.getElementById('clientsCount').value : null;
-    const activityDesc = document.getElementById('activityDesc').value.trim();
 
-    // حساب نسبة الغياب
+    if(companyName === '') {
+      document.getElementById('error-companyName').innerText = 'يرجى إدخال اسم الشركة';
+      valid = false;
+    }
+    if(isNaN(revenue) || revenue < 0) {
+      document.getElementById('error-revenue').innerText = 'يرجى إدخال إيرادات صحيحة (0 أو أكثر)';
+      valid = false;
+    }
+    if(isNaN(expenses) || expenses < 0) {
+      document.getElementById('error-expenses').innerText = 'يرجى إدخال مصاريف صحيحة (0 أو أكثر)';
+      valid = false;
+    }
+    if(isNaN(employees) || employees < 1) {
+      document.getElementById('error-employees').innerText = 'يرجى إدخال عدد موظفين صحيح (1 أو أكثر)';
+      valid = false;
+    }
+    if(isNaN(avgAbsent) || avgAbsent < 0 || avgAbsent > employees) {
+      document.getElementById('error-avgAbsent').innerText = 'يرجى إدخال غياب صحيح (0 أو أكثر وأقل من عدد الموظفين)';
+      valid = false;
+    }
+    if(isNaN(production) || production < 0) {
+      document.getElementById('error-production').innerText = 'يرجى إدخال إنتاج صحيح (0 أو أكثر)';
+      valid = false;
+    }
+
+    return valid;
+  }
+
+  function getSelectedOptions(id) {
+    const select = document.getElementById(id);
+    return Array.from(select.selectedOptions).map(opt => opt.value);
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    if(!validate()) {
+      resultDiv.innerText = '';
+      return;
+    }
+
+    const name = document.getElementById('companyName').value.trim();
+    const revenue = +document.getElementById('revenue').value;
+    const expenses = +document.getElementById('expenses').value;
+    const employees = +document.getElementById('employees').value;
+    const avgAbsent = +document.getElementById('avgAbsent').value;
+    const production = +document.getElementById('production').value;
+    const clientsCountVal = document.getElementById('clientsCount').value;
+    const clientsCount = clientsCountVal ? +clientsCountVal : null;
+
+    const strengths = getSelectedOptions('strengths');
+    const weaknesses = getSelectedOptions('weaknesses');
+    const opportunities = getSelectedOptions('opportunities');
+    const threats = getSelectedOptions('threats');
+
     const absenceRate = ((avgAbsent / employees) * 100).toFixed(2);
-
-    // حساب الربح أو الخسارة
     const profit = revenue - expenses;
-
-    // إنتاجية الموظف الحاضر
     const presentEmployees = employees - avgAbsent;
     const productivity = presentEmployees > 0 ? (production / presentEmployees).toFixed(2) : 0;
 
-    // تحليل SWOT بسيط تلقائي بناءً على وصف النشاط
-    let strengths = [], weaknesses = [], opportunities = [], threats = [];
+    // مؤشرات مالية إضافية
+    const profitMargin = revenue > 0 ? ((profit / revenue) * 100).toFixed(2) : 0;
+    const expenseRatio = revenue > 0 ? ((expenses / revenue) * 100).toFixed(2) : 0;
+    const breakEven = expenses === 0 ? 'غير محدد' : (expenses / (profitMargin / 100)).toFixed(2);
 
-    if(activityDesc){
-      const desc = activityDesc.toLowerCase();
-      if(desc.includes('موارد بشرية') || desc.includes('توظيف')){
-        strengths.push("خبرة في التوظيف وإدارة الموارد البشرية.");
-        opportunities.push("ارتفاع الطلب على خدمات الموارد البشرية.");
-      }
-      if(desc.includes('استشارات')){
-        strengths.push("خبرة في تقديم استشارات قانونية وإدارية.");
-        opportunities.push("توسع السوق للخدمات الاستشارية.");
-      }
-      if(desc.includes('تحليل')){
-        strengths.push("تقديم خدمات تحليل بيانات متقدمة.");
-      }
-      if(desc.includes('صغيرة') || desc.includes('متوسطة')){
-        weaknesses.push("موارد محدودة نسبياً للشركات الصغيرة والمتوسطة.");
-      }
-      if(desc.includes('تنافس')){
-        threats.push("منافسة عالية في السوق.");
-      }
-    } else {
-      weaknesses.push("الوصف غير متوفر لتحديد نقاط القوة والضعف.");
-    }
+    // حساب مؤشر الأداء KPI (0 - 100)
+    let kpi = 50;
+    if(profit > 0) kpi += 25; else kpi -= 15;
+    if(productivity >= 10) kpi += 20; else if(productivity >= 5) kpi += 10; else kpi -= 10;
+    if(absenceRate <= 5) kpi += 10; else if(absenceRate <= 10) kpi += 5; else kpi -= 20;
+    if(kpi > 100) kpi = 100;
+    if(kpi < 0) kpi = 0;
 
     // إعداد تقرير نصي
     let report = `📊 تقرير أداء شركة: ${name}\n\n`;
-
-    report += `📍 الموقع: ${location}\n`;
-    report += `💰 الإيرادات الشهرية: ${revenue} جنيه\n`;
-    report += `💸 المصاريف الشهرية: ${expenses} جنيه\n`;
-    report += `📈 الربح/الخسارة: ${profit > 0 ? 'ربح' : 'خسارة'} مقدارها ${Math.abs(profit)} جنيه\n\n`;
+    report += `💰 الإيرادات الشهرية: ${revenue}\n`;
+    report += `💸 المصاريف الشهرية: ${expenses}\n`;
+    report += `📈 الربح/الخسارة: ${profit > 0 ? 'ربح' : 'خسارة'} بمقدار ${Math.abs(profit)}\n`;
+    report += `🔹 هامش الربح: ${profitMargin}%\n`;
+    report += `🔹 نسبة المصاريف للإيرادات: ${expenseRatio}%\n\n`;
 
     report += `👥 عدد الموظفين: ${employees}\n`;
     report += `🚶‍♂️ متوسط الغياب اليومي: ${avgAbsent} (${absenceRate}%)\n`;
     report += `🏭 إجمالي الإنتاج: ${production}\n`;
-    report += `⚙️ إنتاجية الموظف الحاضر: ${productivity} وحدة/موظف\n\n`;
+    report += `⚙️ إنتاجية الموظف الحاضر: ${productivity} وحدة/موظف\n`;
+    report += `📉 نقطة التعادل (Break-even): ${breakEven}\n\n`;
 
-    if(clientsCount !== null){
+    if(clientsCount !== null) {
       report += `👨‍💼 عدد العملاء: ${clientsCount}\n\n`;
     }
 
-    // إضافة تحليل SWOT
     report += `📋 تحليل SWOT:\n`;
-
-    if(strengths.length) report += `✔️ نقاط القوة:\n - ${strengths.join('\n - ')}\n`;
-    if(weaknesses.length) report += `⚠️ نقاط الضعف:\n - ${weaknesses.join('\n - ')}\n`;
-    if(opportunities.length) report += `🌟 الفرص:\n - ${opportunities.join('\n - ')}\n`;
-    if(threats.length) report += `🚨 التهديدات:\n - ${threats.join('\n - ')}\n`;
-
-    document.getElementById('result').innerText = report;
-
-    // رسم بياني للمؤشرات الأساسية
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-      var data = google.visualization.arrayToDataTable([
-        ['المؤشر', 'القيمة', { role: 'style' }],
-        ['الإيرادات', revenue, '#4CAF50'],
-        ['المصاريف', expenses, '#f44336'],
-        ['عدد الموظفين', employees, '#2196F3'],
-        ['الإنتاجية', parseFloat(productivity), '#FFC107'],
-        ['نسبة الغياب', parseFloat(absenceRate), '#9E9E9E']
-      ]);
-
-      var options = {
-        title: 'مؤشرات أداء الشركة',
-        legend: { position: 'none' },
-        vAxis: { minValue: 0 },
-        chartArea: {width: '70%', height: '70%'}
-      };
-
-      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
-    }
-
-    // عرض خريطة Google Maps بموقع الشركة ونقاط نموذجية للمنافسين
-    initMap(location);
-
-  });
-
-  function initMap(locationName) {
-    var geocoder = new google.maps.Geocoder();
-    var mapDiv = document.getElementById('map');
-    mapDiv.innerHTML = 'جاري تحميل الخريطة...';
-
-    geocoder.geocode( { 'address': locationName}, function(results, status) {
-      if (status === 'OK') {
-        var map = new google.maps.Map(mapDiv, {
-          zoom: 12,
-          center: results[0].geometry.location
-        });
-
-        // علامة على موقع الشركة
-        var marker = new google.maps.Marker({
-          map: map,
-          position: results[0].geometry.location,
-          title: 'موقع شركتك'
-        });
-
-        // نقاط منافسين نموذجية (مواقع وهمية قريبة)
-        var competitors = [
-          {lat: results[0].geometry.location.lat() + 0.01, lng: results[0].geometry.location.lng() + 0.01, title: 'منافس 1'},
-          {lat: results[0].geometry.location.lat() - 0.008, lng: results[0].geometry.location.lng() + 0.012, title: 'منافس 2'},
-          {lat: results[0].geometry.location.lat() + 0.012, lng: results[0].geometry.location.lng() - 0.015, title: 'منافس 3'}
-        ];
-
-        competitors.forEach(function(c){
-          new google.maps.Marker({
-            map: map,
-            position: {lat: c.lat, lng: c.lng},
-            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-            title: c.title
-          });
-        });
-
-        mapDiv.innerHTML = '';
-      } else {
-        mapDiv.innerHTML = 'تعذر تحميل الخريطة: ' + status;
-      }
-    });
-  }
-</script>
-
-</body>
-</html>
+    if(strengths.length) report += `✔️ نقاط القوة:\n - ${
