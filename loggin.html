@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>تسجيل دخول المدير - رواء</title>
+  <style>
+    body { font-family: "Tajawal", sans-serif; background: #f7f7f7; padding: 30px; }
+    form {
+      max-width: 400px;
+      margin: 50px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 { text-align: center; color: #0a4a7b; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; }
+    button {
+      margin-top: 20px; width: 100%;
+      background: #0a4a7b; color: white; border: none;
+      padding: 12px; font-size: 1.1rem; border-radius: 6px;
+      cursor: pointer;
+    }
+    nav { text-align: center; margin-top: 15px; }
+    nav a { color: #0a4a7b; text-decoration: none; margin: 0 10px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<h2>تسجيل دخول المدير</h2>
+
+<form>
+  <label>اسم المستخدم</label>
+  <input type="text" required placeholder="admin" />
+
+  <label>كلمة المرور</label>
+  <input type="password" required placeholder="********" />
+
+  <button type="submit">تسجيل الدخول</button>
+</form>
+
+<nav>
+  <a href="index.html">الرئيسية</a>
+  <a href="dashboard.html">لوحة التحكم</a>
+</nav>
+
+</body>
+</html>
