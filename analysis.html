@@ -1,156 +1,108 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
+  <title>تحليل الأداء - رواء</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>تحليل أداء الشركة - رواء</title>
   <style>
     body {
-      font-family: "Tajawal", sans-serif;
-      background-color: #f7f9fc;
-      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
       padding: 20px;
-      color: #333;
     }
     h1 {
       text-align: center;
       color: #0a4a7b;
-      margin-bottom: 30px;
     }
     form {
-      max-width: 800px;
-      margin: 0 auto;
+      max-width: 600px;
+      margin: auto;
       background: white;
-      padding: 25px 30px;
+      padding: 25px;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    label {
-      display: block;
-      margin: 15px 0 5px;
-      font-weight: 600;
-    }
-    input[type="number"],
-    input[type="text"],
-    textarea {
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input, textarea {
       width: 100%;
-      padding: 10px 15px;
-      border-radius: 6px;
+      padding: 10px;
+      margin-top: 5px;
       border: 1px solid #ccc;
-      font-size: 1rem;
-      box-sizing: border-box;
-    }
-    textarea {
-      resize: vertical;
-      min-height: 80px;
+      border-radius: 6px;
     }
     button {
-      background-color: #0a4a7b;
+      margin-top: 20px;
+      background: #0a4a7b;
       color: white;
       border: none;
-      padding: 15px 30px;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 20px;
-      display: block;
+      padding: 12px;
       width: 100%;
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: #063557;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
     }
     .result {
-      max-width: 800px;
-      margin: 30px auto;
+      max-width: 600px;
+      margin: 20px auto;
       background: #e0f0ff;
-      padding: 20px 25px;
+      padding: 20px;
       border-radius: 10px;
-      font-weight: 600;
+      font-weight: bold;
       color: #0a4a7b;
-      min-height: 80px;
-      box-sizing: border-box;
       white-space: pre-line;
-    }
-    nav {
-      max-width: 900px;
-      margin: 10px auto 20px;
-      text-align: center;
-    }
-    nav a {
-      color: #0a4a7b;
-      margin: 0 10px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 1.1rem;
-    }
-    nav a:hover {
-      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
-  <h1>تحليل أداء الشركة - رواء</h1>
-  
-  <nav>
-    <a href="index.html">الرئيسية</a>
-    <a href="services.html">الخدمات</a>
-    <a href="analysis.html">تحليل الأداء</a>
-    <a href="dashboard.html">لوحة التحكم</a>
-    <a href="register.html">تسجيل عميل</a>
-    <a href="login.html">تسجيل دخول المدير</a>
-    <a href="contact.html">تواصل معنا</a>
-  </nav>
+<h1>تحليل أداء شركتك</h1>
 
-  <form id="performanceForm">
+<form id="analysisForm">
+  <label>اسم الشركة</label>
+  <input type="text" id="companyName" required>
 
-    <label for="companyName">اسم الشركة:</label>
-    <input type="text" id="companyName" name="companyName" required placeholder="أدخل اسم الشركة" />
+  <label>عدد الموظفين الجدد</label>
+  <input type="number" id="hiringCount" required>
 
-    <label for="hiringCount">عدد الموظفين الجدد خلال السنة:</label>
-    <input type="number" id="hiringCount" name="hiringCount" min="0" required />
+  <label>نسبة الغياب (%)</label>
+  <input type="number" id="absenceRate" required>
 
-    <label for="turnoverRate">معدل دوران الموظفين (%) :</label>
-    <input type="number" id="turnoverRate" name="turnoverRate" min="0" max="100" step="0.1" required />
+  <label>إجمالي الإنتاج</label>
+  <input type="number" id="productionQty" required>
 
-    <label for="absenceRate">نسبة الغياب (%) :</label>
-    <input type="number" id="absenceRate" name="absenceRate" min="0" max="100" step="0.1" required />
+  <label>ملاحظات أخرى</label>
+  <textarea id="notes"></textarea>
 
-    <label for="productionQty">كمية الإنتاج الشهرية (وحدات):</label>
-    <input type="number" id="productionQty" name="productionQty" min="0" required />
+  <button type="submit">حلل الآن</button>
+</form>
 
-    <label for="defectRate">نسبة العيوب في الإنتاج (%) :</label>
-    <input type="number" id="defectRate" name="defectRate" min="0" max="100" step="0.1" required />
+<div class="result" id="resultBox"></div>
 
-    <label for="salesRevenue">إيرادات المبيعات الشهرية (بالريال):</label>
-    <input type="number" id="salesRevenue" name="salesRevenue" min="0" required />
+<script>
+  document.getElementById('analysisForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-    <label for="adminNotes">ملاحظات إدارية (اختياري):</label>
-    <textarea id="adminNotes" name="adminNotes" placeholder="أدخل أي ملاحظات إدارية"></textarea>
+    const name = document.getElementById('companyName').value;
+    const hire = +document.getElementById('hiringCount').value;
+    const absent = +document.getElementById('absenceRate').value;
+    const prod = +document.getElementById('productionQty').value;
+    const notes = document.getElementById('notes').value;
 
-    <button type="submit">احسب التحليل</button>
+    let result = `تحليل أداء شركة: ${name}\n\n`;
+    result += `عدد الموظفين الجدد: ${hire}\n`;
+    result += `نسبة الغياب: ${absent}%\n`;
+    result += `إجمالي الإنتاج: ${prod} وحدة\n`;
 
-  </form>
+    if (absent > 15) result += `⚠️ نسبة الغياب مرتفعة وقد تؤثر على الإنتاج.\n`;
+    if (prod < 500) result += `⚠️ الإنتاج منخفض، يُنصح بمراجعة سير العمل.\n`;
 
-  <div class="result" id="resultBox"></div>
+    if (notes.trim() !== "") {
+      result += `\n📌 ملاحظاتك:\n${notes}`;
+    }
 
-  <script>
-    const form = document.getElementById('performanceForm');
-    const resultBox = document.getElementById('resultBox');
+    document.getElementById('resultBox').innerText = result;
+  });
+</script>
 
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const companyName = form.companyName.value.trim();
-      const hiringCount = Number(form.hiringCount.value);
-      const turnoverRate = Number(form.turnoverRate.value);
-      const absenceRate = Number(form.absenceRate.value);
-      const productionQty = Number(form.productionQty.value);
-      const defectRate = Number(form.defectRate.value);
-      const salesRevenue = Number(form.salesRevenue.value);
-      const adminNotes = form.adminNotes.value.trim();
-
-      let analysis = `تحليل شامل لأداء شركة ${companyName}:\n\n`;
-
-      analysis += `- تم
+</body>
+</html>
