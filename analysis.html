@@ -1,6 +1,212 @@
-<script>
-  document.getElementById('analysisForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('الزر شغال!');
-  });
-</script>
+<!DOCTYPE html><html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تحليل بيانات الشركة - رواء</title>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #f2f6fc;
+      color: #222;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #004d7a;
+      margin-bottom: 20px;
+    }
+    form {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 77, 122, 0.15);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background-color: #004d7a;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #006699;
+    }
+    #result, #swot, #chart_div, #plan, #kpi_table, #conclusion {
+      max-width: 700px;
+      margin: 30px auto 0;
+      background: #e3f2fd;
+      padding: 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      color: #0d47a1;
+      white-space: pre-line;
+    }
+    .section-title {
+      color: #004d7a;
+      margin-top: 40px;
+      text-align: center;
+      font-size: 22px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    table, th, td {
+      border: 1px solid #aaa;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #cfe3f3;
+    }
+  </style>
+</head>
+<body>
+  <h1>تحليل بيانات شركتك</h1>
+  <form id="analysisForm">
+    <label>اسم الشركة:</label>
+    <input type="text" id="companyName" required /><label>الإيرادات الشهرية:</label>
+<input type="number" id="revenue" required />
+
+<label>المصاريف الشهرية:</label>
+<input type="number" id="expenses" required />
+
+<label>عدد الموظفين:</label>
+<input type="number" id="employees" required />
+
+<label>متوسط الغياب اليومي:</label>
+<input type="number" id="absent" required />
+
+<label>إجمالي الإنتاج الشهري:</label>
+<input type="number" id="production" required />
+
+<button type="submit">ابدأ التحليل</button>
+
+  </form>  <div id="result"></div>
+  <div id="chart_div" style="height: 300px;"></div>
+  <div id="kpi_table"></div>
+  <div id="swot"></div>
+  <div id="plan"></div>
+  <div id="conclusion"></div>  <script>
+    google.charts.load("current", {packages:["corechart"]});
+
+    document.getElementById("analysisForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("companyName").value;
+      const revenue = parseFloat(document.getElementById("revenue").value);
+      const expenses = parseFloat(document.getElementById("expenses").value);
+      const employees = parseInt(document.getElementById("employees").value);
+      const absent = parseInt(document.getElementById("absent").value);
+      const production = parseFloat(document.getElementById("production").value);
+
+      const profit = revenue - expenses;
+      const absenceRate = ((absent / employees) * 100).toFixed(2);
+      const productivity = ((production / (employees - absent))).toFixed(2);
+
+      let report = `📊 تقرير أداء شامل للشركة: ${name}\n\n`;
+      report += `💰 الإيرادات الشهرية: ${revenue}\n`;
+      report += `💸 المصاريف الشهرية: ${expenses}\n`;
+      report += `📈 الربح الشهري: ${profit}\n`;
+      report += `👥 عدد الموظفين: ${employees}\n`;
+      report += `🚷 معدل الغياب اليومي: ${absenceRate}%\n`;
+      report += `🏭 إنتاجية الموظف الحاضر: ${productivity} وحدة\n\n`;
+
+      report += "📌 توصيات:\n";
+      if (profit < 0) report += "- تقليل المصاريف أو زيادة الإيرادات بشكل عاجل.\n";
+      if (absenceRate > 10) report += "- معدل الغياب مرتفع، يجب تحسين بيئة العمل.\n";
+      if (productivity < 10) report += "- إنتاجية منخفضة، يوصى بتدريب الموظفين وتحفيزهم.\n";
+      if (profit >= 0 && absenceRate <= 10 && productivity >= 10) report += "- الأداء ممتاز، حافظ على استمرارية التطوير.\n";
+
+      document.getElementById("result").innerText = report;
+
+      // رسم بياني
+      google.charts.setOnLoadCallback(function() {
+        const data = google.visualization.arrayToDataTable([
+          ['البند', 'القيمة'],
+          ['إيرادات', revenue],
+          ['مصاريف', expenses],
+          ['ربح', profit > 0 ? profit : 0]
+        ]);
+
+        const options = {
+          title: 'الملخص المالي',
+          colors: ['#007acc', '#e53935', '#43a047'],
+          legend: { position: 'bottom' }
+        };
+
+        const chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      });
+
+      // جدول مؤشرات الأداء
+      const kpiHTML = `
+        <h2 class='section-title'>📌 مؤشرات الأداء الرئيسية (KPI)</h2>
+        <table>
+          <tr><th>المؤشر</th><th>القيمة</th></tr>
+          <tr><td>الربح الشهري</td><td>${profit}</td></tr>
+          <tr><td>معدل الغياب</td><td>${absenceRate}%</td></tr>
+          <tr><td>إنتاجية الموظف</td><td>${productivity} وحدة</td></tr>
+        </table>`;
+      document.getElementById("kpi_table").innerHTML = kpiHTML;
+
+      // تحليل SWOT
+      const swot = `🧠 تحليل SWOT:\n
+✅ نقاط القوة:
+- فريق عمل مؤهل
+- فرص نمو في السوق
+
+⚠️ نقاط الضعف:
+- اعتماد كبير على عميل واحد
+- ضعف في التسويق الرقمي
+
+📈 الفرص:
+- توسع في السوق المحلي
+- التحول الرقمي و الأتمتة
+
+🚨 التهديدات:
+- منافسة شديدة
+- تقلبات اقتصادية`;
+      document.getElementById("swot").innerText = swot;
+
+      // خطة عمل مقترحة
+      const plan = `🗂️ خطة عمل مقترحة:\n
+1. مراجعة هيكل التكاليف لتقليل المصروفات.
+2. تحسين إدارة الحضور والانصراف.
+3. تنظيم برامج تدريبية لزيادة الإنتاجية.
+4. تطوير خطة تسويق رقمية فعالة.
+5. تقييم أداء الموظفين شهريًا مع نظام مكافآت.`;
+      document.getElementById("plan").innerText = plan;
+
+      // استنتاج نهائي
+      const conclusion = `✅ استنتاج استشاري:\n
+استنادًا إلى البيانات المدخلة، تم إجراء تحليل شامل يغطي المؤشرات التشغيلية والمالية، وتم تطوير خطة عمل عملية وقابلة للتنفيذ. يُنصح بتحديث التحليل شهريًا لمتابعة التقدم وقياس النتائج.`;
+      document.getElementById("conclusion").innerText = conclusion;
+    });
+  </script></body>
+</html>
