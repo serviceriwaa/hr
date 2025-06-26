@@ -1,175 +1,214 @@
 <!DOCTYPE html><html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تحليل شامل للشركة</title>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <style>
-    body {
-      font-family: 'Cairo', sans-serif;
-      background-color: #f9fbfc;
-      color: #222;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #004d7a;
-    }
-    form {
-      max-width: 750px;
-      margin: auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 20px;
-    }
-    input, textarea, select {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      margin-top: 8px;
-    }
-    button {
-      background-color: #007acc;
-      color: #fff;
-      padding: 14px;
-      margin-top: 25px;
-      width: 100%;
-      border: none;
-      border-radius: 10px;
-      font-size: 18px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    #result, #swot, #gauge_div, #plan, #market_analysis {
-      max-width: 750px;
-      margin: 30px auto;
-      background-color: #e3f2fd;
-      padding: 20px;
-      border-radius: 12px;
-      white-space: pre-line;
-      color: #0d47a1;
-      line-height: 1.8;
-    }
-    #downloadPDF {
-      background-color: #009688;
-    }
-    #aiAssistant {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      width: 300px;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      padding: 15px;
-      z-index: 999;
-    }
-    #aiAssistant h3 {
-      margin-top: 0;
-      color: #007acc;
-    }
-    #aiMessages {
-      max-height: 200px;
-      overflow-y: auto;
-      margin-bottom: 10px;
-    }
-    .ai-message {
-      background: #e1f5fe;
-      padding: 8px;
-      margin: 5px 0;
-      border-radius: 8px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>تحليل أداء شركتك - رواء</title>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+<style>
+  body {
+    font-family: 'Cairo', Tahoma, sans-serif;
+    background-color: #f9fbfc;
+    padding: 20px;
+    color: #1a237e;
+  }
+  h1, h2 {
+    text-align: center;
+    color: #0d47a1;
+  }
+  .form-group {
+    margin: 15px 0;
+  }
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  select[multiple] {
+    height: 100px;
+  }
+  button {
+    background-color: #0d47a1;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    display: block;
+    margin: auto;
+  }
+  .result {
+    margin-top: 30px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .logo {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .logo img {
+    max-width: 180px;
+  }
+</style>
 </head>
 <body>
-  <h1>📊 منصة تحليل أداء الشركات</h1>
-  <form id="analysisForm">
+<div class="logo">
+  <img src="logo_rafad.png" alt="شعار رفاد">
+</div>
+<h1>📊 نموذج تحليل أداء شركتك</h1><div id="form">
+  <div class="form-group">
     <label>اسم الشركة:</label>
-    <input type="text" id="companyName" required><label>المدينة / العنوان:</label>
-<input type="text" id="location" required>
+    <input type="text" id="companyName">
+  </div>
+  <div class="form-group">
+    <label>النشاط:</label>
+    <select id="activity">
+      <option value="صناعي">صناعي</option>
+      <option value="تجاري">تجاري</option>
+      <option value="خدمي">خدمي</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>الإيرادات الشهرية:</label>
+    <input type="number" id="revenue">
+  </div>
+  <div class="form-group">
+    <label>المصروفات الشهرية:</label>
+    <input type="number" id="expenses">
+  </div>
+  <div class="form-group">
+    <label>عدد الموظفين:</label>
+    <input type="number" id="employees">
+  </div>
+  <div class="form-group">
+    <label>الإنتاج الشهري:</label>
+    <input type="number" id="production">
+  </div>
+  <div class="form-group">
+    <label>متوسط الغياب اليومي:</label>
+    <input type="number" id="absent">
+  </div>
+  <div class="form-group">
+    <label>هل تواجه مشاكل مع العملاء؟</label>
+    <select id="clientIssues" onchange="toggleIssue()">
+      <option value="لا">لا</option>
+      <option value="نعم">نعم</option>
+    </select>
+  </div>
+  <div class="form-group" id="issueBox" style="display:none">
+    <label>وضح المشكلة:</label>
+    <textarea id="issueDetail" placeholder="مثال: تأخر في الرد - ضعف دعم فني"></textarea>
+  </div>  <div class="form-group">
+    <label>نقاط القوة:</label>
+    <select id="strengths" multiple>
+      <option value="سمعة جيدة">سمعة جيدة</option>
+      <option value="فريق محترف">فريق محترف</option>
+      <option value="خبرة عالية">خبرة عالية</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>نقاط الضعف:</label>
+    <select id="weaknesses" multiple>
+      <option value="ضعف التسويق">ضعف التسويق</option>
+      <option value="نقص في العمالة">نقص في العمالة</option>
+      <option value="ضعف التواصل">ضعف التواصل</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>الفرص:</label>
+    <select id="opportunities" multiple>
+      <option value="سوق جديدة">سوق جديدة</option>
+      <option value="دعم حكومي">دعم حكومي</option>
+      <option value="شراكات محتملة">شراكات محتملة</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>التهديدات:</label>
+    <select id="threats" multiple>
+      <option value="منافسة قوية">منافسة قوية</option>
+      <option value="تغيرات قانونية">تغيرات قانونية</option>
+      <option value="ارتفاع التكاليف">ارتفاع التكاليف</option>
+    </select>
+  </div><button onclick="generateReport()">ابدأ التحليل</button>
 
-<label>النشاط الرئيسي:</label>
-<select id="mainActivity">
-  <option value="صناعي">صناعي</option>
-  <option value="تجاري">تجاري</option>
-  <option value="خدمي">خدمي</option>
-  <option value="زراعي">زراعي</option>
-  <option value="أخرى">أخرى</option>
-</select>
+</div><div id="result" class="result"></div>
+<div style="text-align: center; display: none;" id="downloadBtn">
+  <button onclick="downloadPDF()">📥 تحميل التقرير PDF</button>
+</div><script>
+function toggleIssue() {
+  document.getElementById("issueBox").style.display =
+    document.getElementById("clientIssues").value === "نعم" ? "block" : "none";
+}
 
-<label>نوع المنتج أو الخدمة:</label>
-<input type="text" id="productType">
+function getValues(id) {
+  return Array.from(document.getElementById(id).selectedOptions).map(opt => opt.value);
+}
 
-<label>الإيرادات الشهرية:</label>
-<input type="number" id="revenue" required>
+function generateReport() {
+  const name = document.getElementById("companyName").value;
+  const act = document.getElementById("activity").value;
+  const rev = +document.getElementById("revenue").value;
+  const exp = +document.getElementById("expenses").value;
+  const emp = +document.getElementById("employees").value;
+  const prod = +document.getElementById("production").value;
+  const ab = +document.getElementById("absent").value;
+  const clientIssue = document.getElementById("clientIssues").value;
+  const issueDetail = document.getElementById("issueDetail").value;
 
-<label>المصاريف الشهرية:</label>
-<input type="number" id="expenses" required>
+  const s = getValues("strengths").join(', ') || 'لا يوجد';
+  const w = getValues("weaknesses").join(', ') || 'لا يوجد';
+  const o = getValues("opportunities").join(', ') || 'لا يوجد';
+  const t = getValues("threats").join(', ') || 'لا يوجد';
 
-<label>عدد الموظفين:</label>
-<input type="number" id="employees" required>
+  const profit = rev - exp;
+  const absentAlert = ab > emp * 0.1 ? "⚠️ نسبة الغياب مرتفعة" : "✅ نسبة الغياب مقبولة";
+  const performance = profit > 0 ? "🟢 الشركة رابحة" : "🔴 الشركة خاسرة";
 
-<label>متوسط الغياب اليومي:</label>
-<input type="number" id="absent" required>
+  let report = `<div class='logo'><img src='logo_rafad.png' alt='شعار رفاد' /></div>`;
+  report += `<h2>📄 تقرير شركة ${name}</h2>`;
+  report += `<p>🏢 النشاط: ${act}</p>`;
+  report += `<p>💰 الإيرادات: ${rev} | 📉 المصروفات: ${exp} | ✅ الربح: ${profit}</p>`;
+  report += `<p>👥 عدد الموظفين: ${emp} | 📦 الإنتاج الشهري: ${prod}</p>`;
+  report += `<p>📌 الغياب اليومي: ${ab} — ${absentAlert}</p>`;
+  report += `<p>${performance}</p>`;
+  if (clientIssue === "نعم") report += `<p>🔍 مشاكل العملاء: ${issueDetail}</p>`;
+  report += `<h3>🧠 تحليل SWOT</h3>`;
+  report += `<p><strong>نقاط القوة:</strong> ${s}</p>`;
+  report += `<p><strong>نقاط الضعف:</strong> ${w}</p>`;
+  report += `<p><strong>الفرص:</strong> ${o}</p>`;
+  report += `<p><strong>التهديدات:</strong> ${t}</p>`;
 
-<label>إجمالي الإنتاج الشهري:</label>
-<input type="number" id="production" required>
+  report += `<h3>📋 خطة العمل المقترحة:</h3><ul>`;
+  if (w.includes("التسويق")) report += `<li>تعزيز التسويق الرقمي</li>`;
+  if (w.includes("التواصل")) report += `<li>تحسين أدوات التواصل الداخلي والخارجي</li>`;
+  if (ab > emp * 0.1) report += `<li>وضع نظام تتبع الحضور والتحفيز</li>`;
+  report += `<li>استغلال الفرص لتعزيز الربحية والنمو</li></ul>`;
 
-<label>نوع العملاء (B2B / أفراد / جهات حكومية):</label>
-<input type="text" id="clientType">
+  report += `<p style='margin-top:20px'>📎 هذا التقرير أُعد بواسطة شركة <strong>رواء</strong> باستخدام أدوات تحليل متقدمة. </p>`;
 
-<label>تحليل SWOT (اختياري):</label>
-<label>نقاط القوة:</label>
-<textarea id="strengths"></textarea>
-<label>نقاط الضعف:</label>
-<textarea id="weaknesses"></textarea>
-<label>الفرص:</label>
-<textarea id="opportunities"></textarea>
-<label>التهديدات:</label>
-<textarea id="threats"></textarea>
+  document.getElementById("result").innerHTML = report;
+  document.getElementById("downloadBtn").style.display = 'block';
+}
 
-<button type="submit">ابدأ التحليل</button>
-
-  </form>  <div id="result"></div>
-  <div id="gauge_div" style="width: 400px; height: 220px; margin: auto;"></div>
-  <div id="plan"></div>
-  <div id="swot"></div>
-  <div id="market_analysis"></div>
-  <button id="downloadPDF">تحميل التقرير PDF</button>  <!-- AI Assistant -->  <div id="aiAssistant">
-    <h3>🤖 مساعد ذكي</h3>
-    <div id="aiMessages"></div>
-    <input type="text" id="aiInput" placeholder="اسأل عن مشكلة...">
-    <button onclick="askAI()">أرسل</button>
-  </div>  <script>
-    function askAI() {
-      const input = document.getElementById("aiInput").value.trim();
-      const output = document.getElementById("aiMessages");
-      if (!input) return;
-      const reply = document.createElement("div");
-      reply.classList.add("ai-message");
-
-      // ردود ذكية مبدئية
-      if (input.includes("تسويق")) {
-        reply.innerText = "📢 نصيحة: ابدأ بتحليل جمهورك المستهدف، ثم قم بحملات مركزة عبر المنصات المناسبة.";
-      } else if (input.includes("موظفين") || input.includes("غياب")) {
-        reply.innerText = "👥 يفضل إعداد نظام حوافز وتقارير حضور يومية لتقليل معدل الغياب.";
-      } else if (input.includes("مبيعات")) {
-        reply.innerText = "💰 راجع دورة المبيعات، وعدد العملاء المحتملين، ووقت الإغلاق لتحسين الأداء.";
-      } else {
-        reply.innerText = "🤖 أنا مساعد ذكي! أوضح لي نوع المشكلة وسأساعدك بأفضل شكل ممكن 💡";
-      }
-
-      output.appendChild(reply);
-      document.getElementById("aiInput").value = "";
-    }
-  </script>  <!-- التحليل السابق يبقى كما هو -->  <!-- ... (الكود السابق للتحليل موجود هنا) ... --></body>
+function downloadPDF() {
+  const element = document.getElementById("result");
+  const opt = {
+    margin: 1,
+    filename: 'تقرير_شركة_رواء.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'cm', format: 'a4', orientation: 'portrait' }
+  };
+  html2pdf().from(element).set(opt).save();
+}
+</script></body>
 </html>
