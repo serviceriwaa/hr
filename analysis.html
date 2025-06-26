@@ -2,153 +2,139 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8" />
-<title>تحليل شامل لشركة رواء - المرحلة الأولى</title>
+<title>تحليل شامل لشركتك - رواء</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
+  /* تصميم عصري متجاوب */
   body {
-    font-family: Arial, sans-serif;
-    background: #f0f4f8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f9fbfd;
     margin: 0; padding: 20px;
-    color: #333;
+    color: #222;
   }
   h1 {
     text-align: center;
-    color: #0a4a7b;
-    margin-bottom: 20px;
+    color: #1a73e8;
+    margin-bottom: 30px;
+    font-weight: 700;
   }
   form {
-    max-width: 750px;
+    max-width: 720px;
     margin: auto;
-    background: #fff;
-    padding: 20px 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    background: white;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(26,115,232,0.15);
   }
   label {
     display: block;
-    margin-top: 15px;
-    font-weight: bold;
-    position: relative;
-  }
-  label .tooltip {
-    cursor: help;
-    color: #0a4a7b;
-    font-weight: normal;
-    margin-right: 5px;
-    border-bottom: 1px dotted #0a4a7b;
+    margin-top: 20px;
+    font-weight: 600;
+    color: #444;
   }
   input, select {
+    margin-top: 8px;
     width: 100%;
-    padding: 10px;
-    margin-top: 6px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    padding: 12px 14px;
+    border: 1.8px solid #cbd5e1;
+    border-radius: 8px;
     font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  input:focus, select:focus {
+    border-color: #1a73e8;
+    outline: none;
   }
   select[multiple] {
-    height: 120px;
+    height: 130px;
+  }
+  .tooltip {
+    margin-right: 6px;
+    cursor: help;
+    color: #1a73e8;
+    font-weight: 700;
   }
   button {
-    margin-top: 25px;
+    margin-top: 30px;
     width: 100%;
-    padding: 12px;
-    font-size: 1.1rem;
-    background: #0a4a7b;
+    padding: 14px 0;
+    font-size: 1.15rem;
+    font-weight: 700;
     color: white;
+    background: #1a73e8;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
+    box-shadow: 0 6px 12px rgba(26,115,232,0.35);
+    transition: background-color 0.3s ease;
   }
   button:hover {
-    background: #083a5d;
+    background: #155ab6;
+  }
+  .error {
+    color: #e53935;
+    font-size: 0.9rem;
+    margin-top: 5px;
   }
   #result {
-    max-width: 750px;
-    margin: 30px auto;
-    background: #e6f0ff;
-    padding: 20px;
-    border-radius: 10px;
+    max-width: 720px;
+    margin: 40px auto 0;
+    background: #e8f0fe;
+    border-radius: 12px;
+    padding: 25px 30px;
     white-space: pre-line;
-    font-weight: bold;
-    color: #0a4a7b;
+    color: #1a237e;
+    font-weight: 600;
+    box-shadow: 0 6px 20px rgba(26,115,232,0.2);
   }
   #charts_container {
-    max-width: 750px;
-    margin: 30px auto;
+    max-width: 720px;
+    margin: 40px auto 0;
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 40px;
   }
   #chart_div, #pie_chart_div {
-    width: 350px;
-    height: 300px;
-  }
-  p.note {
-    text-align: center;
-    font-size: 0.9rem;
-    color: #666;
-    margin-top: 5px;
-  }
-  .error {
-    color: red;
-    font-size: 0.9rem;
-    margin-top: 4px;
+    width: 340px;
+    height: 320px;
   }
 </style>
 </head>
 <body>
 
-<h1>تحليل شامل لأداء شركتك مع خطة عمل مقترحة (المرحلة الأولى)</h1>
+<h1>تحليل شامل لأداء شركتك مع خطة عمل مقترحة</h1>
 
 <form id="analysisForm" novalidate>
 
-  <label>اسم الشركة
-    <span class="tooltip" title="اكتب اسم شركتك الرسمي">?</span>
-  </label>
+  <label><span class="tooltip" title="اسم شركتك الرسمي">ℹ️</span>اسم الشركة</label>
   <input type="text" id="companyName" required placeholder="مثلاً: رواء للاستشارات">
   <div id="error-companyName" class="error"></div>
 
-  <label>الإيرادات الشهرية
-    <span class="tooltip" title="إجمالي قيمة الإيرادات الشهرية التي تحققها شركتك">?</span>
-  </label>
+  <label><span class="tooltip" title="إجمالي الإيرادات الشهرية">ℹ️</span>الإيرادات الشهرية</label>
   <input type="number" id="revenue" min="0" required placeholder="مثلاً: 150000">
   <div id="error-revenue" class="error"></div>
 
-  <label>المصاريف الشهرية
-    <span class="tooltip" title="إجمالي قيمة المصاريف الشهرية التي تتحملها شركتك">?</span>
-  </label>
+  <label><span class="tooltip" title="إجمالي المصاريف الشهرية">ℹ️</span>المصاريف الشهرية</label>
   <input type="number" id="expenses" min="0" required placeholder="مثلاً: 120000">
   <div id="error-expenses" class="error"></div>
 
-  <p class="note">(يرجى إدخال القيم المالية حسب العملة التي تستخدمها شركتك)</p>
-
-  <label>عدد الموظفين
-    <span class="tooltip" title="عدد الموظفين الدائمين في شركتك">?</span>
-  </label>
+  <label><span class="tooltip" title="عدد موظفي شركتك">ℹ️</span>عدد الموظفين</label>
   <input type="number" id="employees" min="1" required placeholder="مثلاً: 25">
   <div id="error-employees" class="error"></div>
 
-  <label>متوسط عدد الموظفين الغائبين يوميًا
-    <span class="tooltip" title="عدد الموظفين المتوقع غيابهم يوميًا في المتوسط">?</span>
-  </label>
+  <label><span class="tooltip" title="متوسط عدد الغياب اليومي">ℹ️</span>متوسط عدد الموظفين الغائبين يوميًا</label>
   <input type="number" id="avgAbsent" min="0" required placeholder="مثلاً: 3">
   <div id="error-avgAbsent" class="error"></div>
 
-  <label>إجمالي الإنتاج الشهري (عدد الوحدات أو الخدمات)
-    <span class="tooltip" title="كمية المنتجات أو الخدمات التي تقدمها شهريًا">?</span>
-  </label>
+  <label><span class="tooltip" title="كمية الإنتاج الشهري">ℹ️</span>إجمالي الإنتاج الشهري (وحدات أو خدمات)</label>
   <input type="number" id="production" min="0" required placeholder="مثلاً: 500">
   <div id="error-production" class="error"></div>
 
-  <label>عدد العملاء (اختياري)
-    <span class="tooltip" title="عدد العملاء الحاليين">?</span>
-  </label>
+  <label><span class="tooltip" title="عدد العملاء (اختياري)">ℹ️</span>عدد العملاء (اختياري)</label>
   <input type="number" id="clientsCount" min="0" placeholder="مثلاً: 200">
 
-  <label>نقاط القوة (اختر ما ينطبق)
-    <span class="tooltip" title="اختر من أهم نقاط القوة في شركتك">?</span>
-  </label>
+  <label><span class="tooltip" title="اختر نقاط القوة">ℹ️</span>نقاط القوة (اختر ما ينطبق)</label>
   <select id="strengths" multiple>
     <option value="خبرة عالية في الموارد البشرية">خبرة عالية في الموارد البشرية</option>
     <option value="علاقات قوية مع العملاء">علاقات قوية مع العملاء</option>
@@ -156,9 +142,7 @@
     <option value="تواجد في السوق لفترة طويلة">تواجد في السوق لفترة طويلة</option>
   </select>
 
-  <label>نقاط الضعف (اختر ما ينطبق)
-    <span class="tooltip" title="اختر من أبرز نقاط الضعف في شركتك">?</span>
-  </label>
+  <label><span class="tooltip" title="اختر نقاط الضعف">ℹ️</span>نقاط الضعف (اختر ما ينطبق)</label>
   <select id="weaknesses" multiple>
     <option value="ضعف في التسويق الرقمي">ضعف في التسويق الرقمي</option>
     <option value="نقص في التدريب للموظفين">نقص في التدريب للموظفين</option>
@@ -166,9 +150,7 @@
     <option value="موارد مالية محدودة">موارد مالية محدودة</option>
   </select>
 
-  <label>الفرص (اختر ما ينطبق)
-    <span class="tooltip" title="اختر من الفرص المتاحة في السوق">?</span>
-  </label>
+  <label><span class="tooltip" title="اختر الفرص المتاحة">ℹ️</span>الفرص (اختر ما ينطبق)</label>
   <select id="opportunities" multiple>
     <option value="زيادة الطلب على خدمات الموارد البشرية">زيادة الطلب على خدمات الموارد البشرية</option>
     <option value="توسع السوق الرقمي">توسع السوق الرقمي</option>
@@ -176,9 +158,7 @@
     <option value="شراكات استراتيجية جديدة">شراكات استراتيجية جديدة</option>
   </select>
 
-  <label>التهديدات (اختر ما ينطبق)
-    <span class="tooltip" title="اختر من التهديدات التي تواجهها شركتك">?</span>
-  </label>
+  <label><span class="tooltip" title="اختر التهديدات التي تواجهها">ℹ️</span>التهديدات (اختر ما ينطبق)</label>
   <select id="threats" multiple>
     <option value="منافسة شديدة في السوق">منافسة شديدة في السوق</option>
     <option value="تغيرات في القوانين">تغيرات في القوانين</option>
@@ -201,6 +181,7 @@
 
 <script>
   google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(() => {});
 
   const form = document.getElementById('analysisForm');
   const resultDiv = document.getElementById('result');
@@ -214,7 +195,6 @@
   function validate() {
     clearErrors();
     let valid = true;
-
     const companyName = document.getElementById('companyName').value.trim();
     const revenue = +document.getElementById('revenue').value;
     const expenses = +document.getElementById('expenses').value;
@@ -246,7 +226,6 @@
       document.getElementById('error-production').innerText = 'يرجى إدخال إنتاج صحيح (0 أو أكثر)';
       valid = false;
     }
-
     return valid;
   }
 
@@ -255,14 +234,14 @@
     return Array.from(select.selectedOptions).map(opt => opt.value);
   }
 
-  form.addEventListener('submit', function(e) {
+  form.addEventListener('submit', e => {
     e.preventDefault();
-
     if(!validate()) {
       resultDiv.innerText = '';
       return;
     }
 
+    // جلب القيم
     const name = document.getElementById('companyName').value.trim();
     const revenue = +document.getElementById('revenue').value;
     const expenses = +document.getElementById('expenses').value;
@@ -271,23 +250,21 @@
     const production = +document.getElementById('production').value;
     const clientsCountVal = document.getElementById('clientsCount').value;
     const clientsCount = clientsCountVal ? +clientsCountVal : null;
-
     const strengths = getSelectedOptions('strengths');
     const weaknesses = getSelectedOptions('weaknesses');
     const opportunities = getSelectedOptions('opportunities');
     const threats = getSelectedOptions('threats');
 
+    // حسابات
     const absenceRate = ((avgAbsent / employees) * 100).toFixed(2);
     const profit = revenue - expenses;
     const presentEmployees = employees - avgAbsent;
     const productivity = presentEmployees > 0 ? (production / presentEmployees).toFixed(2) : 0;
-
-    // مؤشرات مالية إضافية
     const profitMargin = revenue > 0 ? ((profit / revenue) * 100).toFixed(2) : 0;
     const expenseRatio = revenue > 0 ? ((expenses / revenue) * 100).toFixed(2) : 0;
     const breakEven = expenses === 0 ? 'غير محدد' : (expenses / (profitMargin / 100)).toFixed(2);
 
-    // حساب مؤشر الأداء KPI (0 - 100)
+    // مؤشر الأداء KPI
     let kpi = 50;
     if(profit > 0) kpi += 25; else kpi -= 15;
     if(productivity >= 10) kpi += 20; else if(productivity >= 5) kpi += 10; else kpi -= 10;
@@ -295,23 +272,87 @@
     if(kpi > 100) kpi = 100;
     if(kpi < 0) kpi = 0;
 
-    // إعداد تقرير نصي
+    // تقرير نصي
     let report = `📊 تقرير أداء شركة: ${name}\n\n`;
     report += `💰 الإيرادات الشهرية: ${revenue}\n`;
     report += `💸 المصاريف الشهرية: ${expenses}\n`;
     report += `📈 الربح/الخسارة: ${profit > 0 ? 'ربح' : 'خسارة'} بمقدار ${Math.abs(profit)}\n`;
     report += `🔹 هامش الربح: ${profitMargin}%\n`;
     report += `🔹 نسبة المصاريف للإيرادات: ${expenseRatio}%\n\n`;
-
     report += `👥 عدد الموظفين: ${employees}\n`;
     report += `🚶‍♂️ متوسط الغياب اليومي: ${avgAbsent} (${absenceRate}%)\n`;
     report += `🏭 إجمالي الإنتاج: ${production}\n`;
     report += `⚙️ إنتاجية الموظف الحاضر: ${productivity} وحدة/موظف\n`;
     report += `📉 نقطة التعادل (Break-even): ${breakEven}\n\n`;
-
     if(clientsCount !== null) {
       report += `👨‍💼 عدد العملاء: ${clientsCount}\n\n`;
     }
-
     report += `📋 تحليل SWOT:\n`;
-    if(strengths.length) report += `✔️ نقاط القوة:\n - ${
+    if(strengths.length) report += `✔️ نقاط القوة:\n - ${strengths.join('\n - ')}\n`;
+    if(weaknesses.length) report += `❌ نقاط الضعف:\n - ${weaknesses.join('\n - ')}\n`;
+    if(opportunities.length) report += `🌟 الفرص:\n - ${opportunities.join('\n - ')}\n`;
+    if(threats.length) report += `⚠️ التهديدات:\n - ${threats.join('\n - ')}\n`;
+
+    // خطة العمل المقترحة بناء على KPI
+    report += `\n📝 خطة العمل المقترحة:\n`;
+    if(kpi >= 80) {
+      report += "أداء ممتاز، استمر في تحسين نقاط القوة وتعزيز استراتيجياتك الحالية.\n";
+    } else if(kpi >= 60) {
+      report += "أداء جيد، لكن يُنصح بمراجعة إدارة المصاريف وتحسين إنتاجية الموظفين.\n";
+    } else {
+      report += "الأداء يحتاج لتحسينات كبيرة، ركز على تقليل المصاريف، تحسين بيئة العمل، وتطوير مهارات الموظفين.\n";
+    }
+
+    // عرض التقرير
+    resultDiv.innerText = report;
+
+    // رسم الرسوم البيانية
+    google.charts.setOnLoadCallback(() => {
+      drawBarChart(profitMargin, expenseRatio, absenceRate, productivity, kpi);
+      drawPieChart(strengths.length, weaknesses.length, opportunities.length, threats.length);
+    });
+  });
+
+  // رسم بياني عمودي لمؤشرات مالية وأداء
+  function drawBarChart(profitMargin, expenseRatio, absenceRate, productivity, kpi) {
+    const data = google.visualization.arrayToDataTable([
+      ['المؤشر', 'القيمة'],
+      ['هامش الربح %', parseFloat(profitMargin)],
+      ['نسبة المصاريف %', parseFloat(expenseRatio)],
+      ['معدل الغياب %', parseFloat(absenceRate)],
+      ['إنتاجية الموظف', parseFloat(productivity)],
+      ['مؤشر الأداء KPI', parseFloat(kpi)],
+    ]);
+
+    const options = {
+      title: 'مؤشرات الأداء المالي والإداري',
+      legend: { position: 'none' },
+      colors: ['#1a73e8'],
+      vAxis: { minValue: 0 },
+      chartArea: {width: '70%', height: '70%'},
+      fontName: 'Segoe UI',
+    };
+
+    const chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+
+  // رسم بياني دائري لتحليل SWOT
+  function drawPieChart(strengthsCount, weaknessesCount, opportunitiesCount, threatsCount) {
+    const data = google.visualization.arrayToDataTable([
+      ['العنصر', 'العدد'],
+      ['نقاط القوة', strengthsCount],
+      ['نقاط الضعف', weaknessesCount],
+      ['الفرص', opportunitiesCount],
+      ['التهديدات', threatsCount],
+    ]);
+
+    const options = {
+      title: 'تحليل SWOT',
+      pieHole: 0.4,
+      colors: ['#4caf50', '#f44336', '#ff9800', '#9c27b0'],
+      fontName: 'Segoe UI',
+      chartArea: {width: '80%', height: '80%'},
+    };
+
+    const chart = new google.visualization.PieChart(document.get
